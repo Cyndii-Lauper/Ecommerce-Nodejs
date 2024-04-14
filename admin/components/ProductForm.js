@@ -54,7 +54,10 @@ export default function ProductForm({
       for (const file of files) {
         data.append('file', file);
       }
-      const res = await axios.post('/api/upload', data);
+      const res = await axios.post('/api/upload', data, {
+        headers: {'Content-Type': 'multipart/form-data'},
+      });
+      console.log(res.data);
       setImages(oldImages => {
         return [...oldImages, ...res.data.links];
       });
