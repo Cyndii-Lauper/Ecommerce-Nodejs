@@ -1,87 +1,89 @@
-import Center from "./Center";
+import Center from "@/components/Center";
 import styled from "styled-components";
-import Button from "./Button";
+import Button from "@/components/Button";
+import ButtonLink from "@/components/ButtonLink";
+import CartIcon from "@/components/icons/CartIcon";
+import {useContext} from "react";
+import {CartContext} from "@/components/CartContext";
 
-export default function Featured() {
-  const Bg = styled.div`
-    background-color: #222;
-    color: #fff;
-    padding: 50px 0;
-  `;
-  const Title = styled.h1`
-    margin: 0;
-    font-weight: normal;
-    font-size: 1.5rem;
-    @media screen and (min-width: 768px) {
-      font-size: 3rem;
-    }
-  `;
-  const Desc = styled.p`
-    color: #aaa;
-    font-size: 0.8rem;
-  `;
-  const ColumnsWrapper = styled.div`
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 40px;
-    img {
-      max-width: 100%;
-      max-height: 200px;
-      display: block;
-      margin: 0 auto;
-    }
+const Bg = styled.div`
+  background-color: #222;
+  color:#fff;
+  padding: 50px 0;
+`;
+const Title = styled.h1`
+  margin:0;
+  font-weight:normal;
+  font-size:1.5rem;
+  @media screen and (min-width: 768px) {
+    font-size:3rem;
+  }
+`;
+const Desc = styled.p`
+  color:#aaa;
+  font-size:.8rem;
+`;
+const ColumnsWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  img{
+    max-width: 100%;
+    max-height: 200px;
+    display: block;
+    margin: 0 auto;
+  }
+  div:nth-child(1) {
+    order: 2;
+  }
+  @media screen and (min-width: 768px) {
+    grid-template-columns: 1.1fr 0.9fr;
     div:nth-child(1) {
-      order: 2;
+      order: 0;
     }
-    @media screen and (min-width: 768px) {
-      grid-template-columns: 1.1fr 0.9fr;
-      div:nth-child(1) {
-        order: 0;
-      }
-      img {
-        max-width: 100%;
-      }
-    }
-  `;
-  const Column = styled.div`
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  `;
-  const ButtonsWrapper = styled.div`
-    display: flex;
-    gap: 10px;
-    margin-top: 25px;
-  `;
-  const Wrapper = styled.div`
-    display: grid;
-    grid-template-columns: 0.8fr 1.2fr;
-    gap: 40px;
-    img {
+    img{
       max-width: 100%;
     }
-  `;
+  }
+`;
+const Column = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const ButtonsWrapper = styled.div`
+  display: flex;
+  gap:10px;
+  margin-top:25px;
+`;
 
+export default function Featured({product}) {
+  const {addProduct} = useContext(CartContext);
+  function addFeaturedToCart() {
+    addProduct(product._id);
+  }
   return (
     <Bg>
       <Center>
-        <Wrapper>
+        <ColumnsWrapper>
           <Column>
             <div>
-              <Title>Featured Product</Title>
-              <Desc>Find the best product for you</Desc>
-              <Button>Shop Now</Button>
-              <Button size ="l">Add to cart</Button>
+              <Title>Product Features</Title>
+              <Desc>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system</Desc>
+              <ButtonsWrapper>
+                <Button>Read more</Button>
+                <Button >
+                  <CartIcon />
+                  Add to cart
+                </Button>
+              </ButtonsWrapper>
             </div>
           </Column>
           <Column>
-            <img
-              src="https://minh-next-ecommerce.s3.amazonaws.com/1713061231613.jpg"
-              alt="Featured Product"
-            />
+            <img src="https://dawid-next-ecommerce.s3.amazonaws.com/1679151719649.png" alt=""/>
           </Column>
-        </Wrapper>
+        </ColumnsWrapper>
       </Center>
+
     </Bg>
   );
 }
