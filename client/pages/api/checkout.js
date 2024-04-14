@@ -1,7 +1,9 @@
 import {mongooseConnect} from "@/lib/mongoose";
 import {Product} from "@/models/Product";
 import {Order} from "@/models/Order";
-const stripe = require('stripe')(process.env.STRIPE_SK);
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/pages/api/auth/[...nextauth]";
+// const stripe = require('stripe')(process.env.STRIPE_SK);
 
 export default async function handler(req,res) {
   if (req.method !== 'POST') {
@@ -34,22 +36,27 @@ export default async function handler(req,res) {
     }
   }
 
+  const session = await getServerSession(req,res,authOptions);
+
   const orderDoc = await Order.create({
     line_items,name,email,city,postalCode,
     streetAddress,country,paid:false,
+    userEmail: session?.user?.email,
   });
 
-  const session = await stripe.checkout.sessions.create({
-    line_items,
-    mode: 'payment',
-    customer_email: email,
-    success_url: process.env.PUBLIC_URL + '/cart?success=1',
-    cancel_url: process.env.PUBLIC_URL + '/cart?canceled=1',
-    metadata: {orderId:orderDoc._id.toString(),test:'ok'},
-  });
+// đang lỗi chưa biết cách fix
+  // const stripeSession = await stripe.checkout.sessions.create({
+  //   line_items,
+  //   mode: 'payment',
+  //   customer_email: email,
+  //   success_url: process.env.PUBLIC_URL + '/cart?success=1',
+  //   cancel_url: process.env.PUBLIC_URL + '/cart?canceled=1',
+  //   metadata: {orderId:orderDoc._id.toString()},
+  //   allow_promotion_codes: true,
+  // });
 
   res.json({
-    url:session.url,
+    url:stripeSession.url,
   })
 
 }

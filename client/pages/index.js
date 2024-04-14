@@ -3,25 +3,25 @@ import Featured from "@/components/Featured";
 import {Product} from "@/models/Product";
 import {mongooseConnect} from "@/lib/mongoose";
 import NewProducts from "@/components/NewProducts";
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/pages/api/auth/[...nextauth]";
 
-export default function HomePage({featuredProduct,newProducts}) {
+export default function HomePage({newProducts}) {
   return (
     <div>
       <Header />
-      <Featured product={featuredProduct} />
-      <NewProducts products={newProducts} />
+      <Featured />
+      <NewProducts products={newProducts}/>
     </div>
   );
 }
 
-export async function getServerSideProps() {
-  const featuredProductId = '640de2b12aa291ebdf213d48';
+export async function getServerSideProps(ctx) {
   await mongooseConnect();
-  const featuredProduct = await Product.findById(featuredProductId);
   const newProducts = await Product.find({}, null, {sort: {'_id':-1}, limit:10});
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
   return {
     props: {
-      featuredProduct: JSON.parse(JSON.stringify(featuredProduct)),
       newProducts: JSON.parse(JSON.stringify(newProducts)),
     },
   };

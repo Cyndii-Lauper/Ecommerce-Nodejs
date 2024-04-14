@@ -7,6 +7,8 @@ import {CartContext} from "@/components/CartContext";
 import axios from "axios";
 import Table from "@/components/Table";
 import Input from "@/components/Input";
+import {RevealWrapper} from "next-reveal";
+import {useSession} from "next-auth/react";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -16,6 +18,21 @@ const ColumnsWrapper = styled.div`
   }
   gap: 40px;
   margin-top: 40px;
+  margin-bottom: 40px;
+  table thead tr th:nth-child(3),
+  table tbody tr td:nth-child(3),
+  table tbody tr.subtotal td:nth-child(2){
+    text-align: right;
+  }
+  table tr.subtotal td{
+    padding: 15px 0;
+  }
+  table tbody tr.subtotal td:nth-child(2){
+    font-size: 1.4rem;
+  }
+  tr.total td{
+    font-weight: bold;
+  }
 `;
 
 const Box = styled.div`
@@ -26,6 +43,7 @@ const Box = styled.div`
 
 const ProductInfoCell = styled.td`
   padding: 10px 0;
+  button{padding:0 !important;}
 `;
 
 const ProductImageBox = styled.div`
@@ -57,7 +75,7 @@ const QuantityLabel = styled.span`
   display: block;
   @media screen and (min-width: 768px) {
     display: inline-block;
-    padding: 0 10px;
+    padding: 0 6px;
   }
 `;
 
@@ -68,6 +86,7 @@ const CityHolder = styled.div`
 
 export default function CartPage() {
   const {cartProducts,addProduct,removeProduct,clearCart} = useContext(CartContext);
+  const {data:session} = useSession();
   const [products,setProducts] = useState([]);
   const [name,setName] = useState('');
   const [email,setEmail] = useState('');
@@ -87,14 +106,18 @@ export default function CartPage() {
     }
   }, [cartProducts]);
   useEffect(() => {
-    if (typeof window === 'undefined') {
+    if (!session) {
       return;
     }
-    if (window?.location.href.includes('success')) {
-      setIsSuccess(true);
-      clearCart();
-    }
-  }, []);
+    axios.get('/api/address').then(response => {
+      setName(response.data.name);
+      setEmail(response.data.email);
+      setCity(response.data.city);
+      setPostalCode(response.data.postalCode);
+      setStreetAddress(response.data.streetAddress);
+      setCountry(response.data.country);
+    });
+  }, [session]);
   function moreOfThisProduct(id) {
     addProduct(id);
   }
@@ -102,57 +125,67 @@ export default function CartPage() {
     removeProduct(id);
   }
   async function goToPayment() {
-    const response = await axios.post('/api/checkout', {
-      name,email,city,postalCode,streetAddress,country,
-      cartProducts,
-    });
-    if (response.data.url) {
-      window.location = response.data.url;
+    try {
+      const response = await axios.post('/api/checkout', {
+        name,
+        email,
+        city,
+        postalCode,
+        streetAddress,
+        country,
+        cartProducts,
+      });
+      if (response.data.url) {
+        window.location = response.data.url;
+      }
+    } catch (error) {
     }
+    window.alert("Đã thêm hóa đơn thành công!");
   }
-  let total = 0;
+  let productsTotal = 0;
   for (const productId of cartProducts) {
     const price = products.find(p => p._id === productId)?.price || 0;
-    total += price;
+    productsTotal += price;
   }
 
-  if (isSuccess) {
-    return (
-      <>
-        <Header />
-        <Center>
-          <ColumnsWrapper>
-            <Box>
-              <h1>Thanks for your order!</h1>
-              <p>We will email you when your order will be sent.</p>
-            </Box>
-          </ColumnsWrapper>
-        </Center>
-      </>
-    );
-  }
+  // if (isSuccess) {
+  //   return (
+  //     <>
+  //       <Header />
+  //       <Center>
+  //         <ColumnsWrapper>
+  //           <Box>
+  //             <h1>Thanks for your order!</h1>
+  //             <p>We will email you when your order will be sent.</p>
+  //           </Box>
+  //         </ColumnsWrapper>
+  //       </Center>
+  //     </>
+  //   );
+  // }
   return (
     <>
       <Header />
       <Center>
         <ColumnsWrapper>
-          <Box>
-            <h2>Cart</h2>
-            {!cartProducts?.length && (
-              <div>Your cart is empty</div>
-            )}
-            {products?.length > 0 && (
-              <Table>
-                <thead>
+          <RevealWrapper delay={0}>
+            <Box>
+              <h2>Cart</h2>
+              {!cartProducts?.length && (
+                <div>Your cart is empty</div>
+              )}
+              {products?.length > 0 && (
+                <Table>
+                  <thead>
                   <tr>
                     <th>Product</th>
                     <th>Quantity</th>
                     <th>Price</th>
                   </tr>
-                </thead>
-                <tbody>
+                  </thead>
+                  <tbody>
                   {products.map(product => (
-                    <tr key={product._id}>
+                    <tr>
                       <ProductInfoCell>
                         <ProductImageBox>
                           <img src={product.images[0]} alt=""/>
@@ -173,55 +206,61 @@ export default function CartPage() {
                       </td>
                     </tr>
                   ))}
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td>${total}</td>
+                  <tr className="subtotal">
+                    <td colSpan={2}>Products</td>
+                    <td>${productsTotal}</td>
                   </tr>
-                </tbody>
-              </Table>
-            )}
-          </Box>
-          {!!cartProducts?.length && (
-            <Box>
-              <h2>Order information</h2>
-              <Input type="text"
-                     placeholder="Name"
-                     value={name}
-                     name="name"
-                     onChange={ev => setName(ev.target.value)} />
-              <Input type="text"
-                     placeholder="Email"
-                     value={email}
-                     name="email"
-                     onChange={ev => setEmail(ev.target.value)}/>
-              <CityHolder>
-                <Input type="text"
-                       placeholder="City"
-                       value={city}
-                       name="city"
-                       onChange={ev => setCity(ev.target.value)}/>
-                <Input type="text"
-                       placeholder="Postal Code"
-                       value={postalCode}
-                       name="postalCode"
-                       onChange={ev => setPostalCode(ev.target.value)}/>
-              </CityHolder>
-              <Input type="text"
-                     placeholder="Street Address"
-                     value={streetAddress}
-                     name="streetAddress"
-                     onChange={ev => setStreetAddress(ev.target.value)}/>
-              <Input type="text"
-                     placeholder="Country"
-                     value={country}
-                     name="country"
-                     onChange={ev => setCountry(ev.target.value)}/>
-              <Button black block
-                      onClick={goToPayment}>
-                Continue to payment
-              </Button>
+                  <tr className="subtotal total">
+                    <td colSpan={2}>Total</td>
+                    <td>${productsTotal}</td>
+                  </tr>
+                  </tbody>
+                </Table>
+              )}
             </Box>
+          </RevealWrapper>
+          {!!cartProducts?.length && (
+            <RevealWrapper delay={100}>
+              <Box>
+                <h2>Order information</h2>
+                <Input type="text"
+                       placeholder="Name"
+                       value={name}
+                       name="name"
+                       onChange={ev => setName(ev.target.value)} />
+                <Input type="text"
+                       placeholder="Email"
+                       value={email}
+                       name="email"
+                       onChange={ev => setEmail(ev.target.value)}/>
+                <CityHolder>
+                  <Input type="text"
+                         placeholder="City"
+                         value={city}
+                         name="city"
+                         onChange={ev => setCity(ev.target.value)}/>
+                  <Input type="text"
+                         placeholder="Postal Code"
+                         value={postalCode}
+                         name="postalCode"
+                         onChange={ev => setPostalCode(ev.target.value)}/>
+                </CityHolder>
+                <Input type="text"
+                       placeholder="Street Address"
+                       value={streetAddress}
+                       name="streetAddress"
+                       onChange={ev => setStreetAddress(ev.target.value)}/>
+                <Input type="text"
+                       placeholder="Country"
+                       value={country}
+                       name="country"
+                       onChange={ev => setCountry(ev.target.value)}/>
+                <Button black block
+                        onClick={goToPayment}>
+                  Continue to payment
+                </Button>
+              </Box>
+            </RevealWrapper>
           )}
         </ColumnsWrapper>
       </Center>
