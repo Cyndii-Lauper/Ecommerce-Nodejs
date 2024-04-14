@@ -6,7 +6,7 @@ import { withSwal } from 'react-sweetalert2';
 function Categories({swal}) {
   const [editedCategory, setEditedCategory] = useState(null);
   const [name,setName] = useState('');
-  const [parentCategory,setParentCategory] = useState('');
+
   const [categories,setCategories] = useState([]);
   const [properties,setProperties] = useState([]);
   useEffect(() => {
@@ -21,7 +21,6 @@ function Categories({swal}) {
     ev.preventDefault();
     const data = {
       name,
-      parentCategory,
       properties:properties.map(p => ({
         name:p.name,
         values:p.values.split(','),
@@ -35,14 +34,12 @@ function Categories({swal}) {
       await axios.post('/api/categories', data);
     }
     setName('');
-    setParentCategory('');
     setProperties([]);
     fetchCategories();
   }
   function editCategory(category){
     setEditedCategory(category);
     setName(category.name);
-    setParentCategory(category.parent?._id);
     setProperties(
       category.properties.map(({name,values}) => ({
       name,
@@ -108,14 +105,6 @@ function Categories({swal}) {
             placeholder={'Category name'}
             onChange={ev => setName(ev.target.value)}
             value={name}/>
-          <select
-                  onChange={ev => setParentCategory(ev.target.value)}
-                  value={parentCategory}>
-            <option value="">No parent category</option>
-            {categories.length > 0 && categories.map(category => (
-              <option key={category._id} value={category._id}>{category.name}</option>
-            ))}
-          </select>
         </div>
         <div className="mb-2">
           <label className="block">Properties</label>
@@ -173,7 +162,6 @@ function Categories({swal}) {
           <thead>
           <tr>
             <td>Category name</td>
-            <td>Parent category</td>
             <td></td>
           </tr>
           </thead>
@@ -181,7 +169,6 @@ function Categories({swal}) {
           {categories.length > 0 && categories.map(category => (
             <tr key={category._id}>
               <td>{category.name}</td>
-              <td>{category?.parent?.name}</td>
               <td>
                 <button
                   onClick={() => editCategory(category)}
