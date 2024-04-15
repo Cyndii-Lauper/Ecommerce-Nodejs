@@ -122,6 +122,7 @@ export default function ProductBox({
           <Price>
             ${price}
           </Price>
+          
           <FlyingButton _id={_id} src={images?.[0]}>Add to cart</FlyingButton>
         </PriceRow>
       </ProductInfoBox>

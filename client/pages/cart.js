@@ -148,21 +148,7 @@ export default function CartPage() {
     productsTotal += price;
   }
 
-  // if (isSuccess) {
-  //   return (
-  //     <>
-  //       <Header />
-  //       <Center>
-  //         <ColumnsWrapper>
-  //           <Box>
-  //             <h1>Thanks for your order!</h1>
-  //             <p>We will email you when your order will be sent.</p>
-  //           </Box>
-  //         </ColumnsWrapper>
-  //       </Center>
-  //     </>
-  //   );
-  // }
+
   return (
     <>
       <Header />
@@ -170,17 +156,17 @@ export default function CartPage() {
         <ColumnsWrapper>
           <RevealWrapper delay={0}>
             <Box>
-              <h2>Cart</h2>
+              <h2>Giỏ hàng</h2>
               {!cartProducts?.length && (
-                <div>Your cart is empty</div>
+                <div>Giỏ hàng của bạn đang trống</div>
               )}
               {products?.length > 0 && (
                 <Table>
                   <thead>
                   <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
+                    <th>Sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Giá cả</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -207,11 +193,11 @@ export default function CartPage() {
                     </tr>
                   ))}
                   <tr className="subtotal">
-                    <td colSpan={2}>Products</td>
+                    <td colSpan={2}>Tất cả sản phẩm</td>
                     <td>${productsTotal}</td>
                   </tr>
                   <tr className="subtotal total">
-                    <td colSpan={2}>Total</td>
+                    <td colSpan={2}>Tổng</td>
                     <td>${productsTotal}</td>
                   </tr>
                   </tbody>
@@ -222,9 +208,9 @@ export default function CartPage() {
           {!!cartProducts?.length && (
             <RevealWrapper delay={100}>
               <Box>
-                <h2>Order information</h2>
+                <h2>Thông tin hoá đơn</h2>
                 <Input type="text"
-                       placeholder="Name"
+                       placeholder="Tên"
                        value={name}
                        name="name"
                        onChange={ev => setName(ev.target.value)} />
@@ -235,29 +221,29 @@ export default function CartPage() {
                        onChange={ev => setEmail(ev.target.value)}/>
                 <CityHolder>
                   <Input type="text"
-                         placeholder="City"
+                         placeholder="Thành phố"
                          value={city}
                          name="city"
                          onChange={ev => setCity(ev.target.value)}/>
                   <Input type="text"
-                         placeholder="Postal Code"
+                         placeholder="Mã bưu chính"
                          value={postalCode}
                          name="postalCode"
                          onChange={ev => setPostalCode(ev.target.value)}/>
                 </CityHolder>
                 <Input type="text"
-                       placeholder="Street Address"
+                       placeholder="Số nhà, tên đường"
                        value={streetAddress}
                        name="streetAddress"
                        onChange={ev => setStreetAddress(ev.target.value)}/>
                 <Input type="text"
-                       placeholder="Country"
+                       placeholder="Quốc gia"
                        value={country}
                        name="country"
                        onChange={ev => setCountry(ev.target.value)}/>
                 <Button black block
                         onClick={goToPayment}>
-                  Continue to payment
+                  Thanh toán
                 </Button>
               </Box>
             </RevealWrapper>

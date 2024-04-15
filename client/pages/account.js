@@ -92,7 +92,7 @@ export default function AccountPage() {
                     {!orderLoaded && <Spinner fullWidth={true} />}
                     {orderLoaded && (
                       <div>
-                        {orders.length === 0 && <p>Login to see your orders</p>}
+                        {orders.length === 0 && <p>Đăng nhập để xem đơn hàng của bạn</p>}
                         {orders.length > 0 &&
                           orders.map((o) => <SingleOrder {...o} />)}
                       </div>
@@ -105,7 +105,7 @@ export default function AccountPage() {
           <div>
             <RevealWrapper delay={100}>
               <WhiteBox>
-                <h2>{session ? "Account details" : "Login"}</h2>
+                <h2>{session ? "Thông tin tài khoản" : "Login"}</h2>
                 {!addressLoaded && (
                   <Spinner fullWidth={true} />
                 )}

@@ -83,7 +83,7 @@ export default function ProductReviews({product}) {
       <ColsWrapper>
         <div>
           <WhiteBox>
-            <Subtitle>Add a review</Subtitle>
+            <Subtitle>Đánh giá</Subtitle>
             <div>
               <StarsRating onChange={setStars} />
             </div>
@@ -96,18 +96,18 @@ export default function ProductReviews({product}) {
               onChange={ev => setDescription(ev.target.value)}
               placeholder="Was it good? Pros? Cons?" />
             <div>
-              <Button primary onClick={submitReview}>Submit your review</Button>
+              <Button primary onClick={submitReview}>Gửi đánh giá</Button>
             </div>
           </WhiteBox>
         </div>
         <div>
           <WhiteBox>
-            <Subtitle>All reviews</Subtitle>
+            <Subtitle>Tất cả đánh giá</Subtitle>
             {reviewsLoading && (
               <Spinner fullWidth={true} />
             )}
             {reviews.length === 0 && (
-              <p>No reviews :(</p>
+              <p>Không có đánh giá :(</p>
             )}
             {reviews.length > 0 && reviews.map(review => (
               <ReviewWrapper>

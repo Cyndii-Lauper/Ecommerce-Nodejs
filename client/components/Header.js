@@ -92,11 +92,11 @@ export default function Header() {
         <Wrapper>
           <Logo href={'/'}>Ecommerce</Logo>
           <StyledNav mobileNavActive={mobileNavActive}>
-            <NavLink href={'/'}>Home</NavLink>
-            <NavLink href={'/products'}>All products</NavLink>
-            <NavLink href={'/categories'}>Categories</NavLink>
-            <NavLink href={'/account'}>Account</NavLink>
-            <NavLink href={'/cart'}>Cart ({cartProducts.length})</NavLink>
+            <NavLink href={'/'}>Trang chủ</NavLink>
+            <NavLink href={'/products'}>Sản phẩm</NavLink>
+            <NavLink href={'/categories'}>Danh mục</NavLink>
+            <NavLink href={'/account'}>Tài khoản</NavLink>
+            <NavLink href={'/cart'}>Giỏ hàng ({cartProducts.length})</NavLink>
             
           </StyledNav>
           <SideIcons>

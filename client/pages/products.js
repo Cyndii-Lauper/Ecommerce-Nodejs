@@ -13,7 +13,7 @@ export default function ProductsPage({products,wishedProducts}) {
     <>
       <Header />
       <Center>
-        <Title>All products</Title>
+        <Title>Sản phẩm</Title>
         <ProductsGrid products={products} wishedProducts={wishedProducts} />
       </Center>
     </>

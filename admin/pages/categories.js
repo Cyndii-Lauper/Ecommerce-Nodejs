@@ -92,7 +92,7 @@ function Categories({swal}) {
   }
   return (
     <Layout>
-      <h1>Categories</h1>
+      <h1>Danh mục</h1>
       <label>
         {editedCategory
           ? `Edit category ${editedCategory.name}`
@@ -146,7 +146,6 @@ function Categories({swal}) {
               onClick={() => {
                 setEditedCategory(null);
                 setName('');
-                setParentCategory('');
                 setProperties([]);
               }}
               className="btn-default">Cancel</button>

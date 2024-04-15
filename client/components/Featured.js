@@ -81,11 +81,10 @@ export default function Featured() {
             <div>
               <RevealWrapper origin={'left'} delay={0}>
                 <ContentWrapper>
-                  <Title>Product Features</Title>
-                  <Desc>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system</Desc>
+                  <Title>Ecommerce Store</Title>
+                  <Desc>Tìm kiếm. Mua sắm. Thỏa mãn. Trải nghiệm mua sắm tốt nhất tại đây!</Desc>
                   <ButtonsWrapper>
-                    <Button href={'/'}>Read more</Button>
-                    
+                    <Button href={'/'}>Xem thêm</Button>
                   </ButtonsWrapper>
                 </ContentWrapper>
               </RevealWrapper>
