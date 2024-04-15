@@ -22,7 +22,8 @@ export default async function handle(req, res) {
     }
   }
   if (req.method === 'GET') {
-    const address = await Address.findOne({userEmail:user.email});
+    const address = await Address.findOne({userEmail: user.email}).select('-_id -__v').lean(); // Lựa chọn tất cả các trường ngoại trừ _id và __v
     res.json(address);
-  }
+}
+
 }
