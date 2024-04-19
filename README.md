@@ -70,7 +70,19 @@ Hoặc là cách tạo key S3 bucket trong AWS để làm chức năng lưu ản
 
 MongoDB có thể trực tiếp sử dụng đường dẫn cho trong code
 
-- Tiếp theo, chạy chương trình
+- Tiếp theo, Là cấp quyền admin cho user mới:
+
+Trong theo đường dẫn admin -> pages -> api -> auth -> [...nextauth].js
+
+<img width="909" alt="Screenshot 2024-04-19 at 14 06 28" src="https://github.com/Cyndii-Lauper/Ecommerce-Nodejs/assets/72398527/6b7c0820-64dd-4412-ab27-db7f385c86d3">
+
+Hãy sửa đoạn   
+
+```bash
+const defaultAdminEmail = 'email of the admin user here';
+ ```
+bằng email bạn muốn cấp quyền admin để đăng nhập vào hệ thống
+- Cuối cùng, chạy chương trình
 ```bash
 npm run dev
 # or
