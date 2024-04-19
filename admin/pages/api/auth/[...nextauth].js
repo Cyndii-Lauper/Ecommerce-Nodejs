@@ -5,6 +5,8 @@ import clientPromise from "@/lib/mongodb";
 import { Admin } from "@/models/Admin";
 import { mongooseConnect } from '@/lib/mongoose';
 
+// const adminEmails = ['mt130811@gmail.com'];
+
 async function createDefaultAdmin() {
   mongooseConnect();
   const defaultAdminEmail = 'email of the admin user here';
