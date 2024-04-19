@@ -43,6 +43,7 @@ export default function AccountPage() {
   const [orders, setOrders] = useState([]);
 
   async function logout() {
+    localStorage.clear();
     await signOut({
       callbackUrl: process.env.NEXT_PUBLIC_URL,
     });

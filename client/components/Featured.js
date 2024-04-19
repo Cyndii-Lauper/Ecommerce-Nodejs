@@ -99,7 +99,6 @@ export default function Featured() {
           </ImgColumn>
         </ColumnsWrapper>
       </Center>
-
     </Bg>
   );
 }
