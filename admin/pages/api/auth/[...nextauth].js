@@ -1,15 +1,23 @@
-import NextAuth, {getServerSession} from 'next-auth'
-import GoogleProvider from 'next-auth/providers/google'
-import {MongoDBAdapter} from "@next-auth/mongodb-adapter";
+import NextAuth, { getServerSession } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "@/lib/mongodb";
-import {Admin} from "@/models/Admin";
-import {mongooseConnect} from '@/lib/mongoose';
+import { Admin } from "@/models/Admin";
+import { mongooseConnect } from '@/lib/mongoose';
 
-// const isAdminEmail = ['mt130811@gmail.com'];
+async function createDefaultAdmin() {
+  mongooseConnect();
+  const defaultAdminEmail = 'email of the admin user here';
+  const existingAdmin = await Admin.findOne({ email: defaultAdminEmail });
+  if (!existingAdmin) {
+    const admin = new Admin({ email: defaultAdminEmail });
+    await admin.save();
+  }
+}
 
 async function isAdminEmail(email) {
   mongooseConnect();
-  return !! (await Admin.findOne({email}));
+  return !!(await Admin.findOne({ email }));
 }
 
 export const authOptions = {
@@ -21,11 +29,14 @@ export const authOptions = {
   ],
   adapter: MongoDBAdapter(clientPromise),
   callbacks: {
-    session: async ({session,token,user}) => {
-      if (await isAdminEmail(session?.user?.email)) {
+    session: async ({ session, token, user }) => {
+      await createDefaultAdmin(); 
+      const isAdmin = await isAdminEmail(session?.user?.email);
+      if (isAdmin) {
+        session.user.isAdmin = true;
         return session;
       } else {
-        return false;
+        return false; 
       }
     },
   },
@@ -33,9 +44,9 @@ export const authOptions = {
 
 export default NextAuth(authOptions);
 
-export async function isAdminRequest(req,res) {
-  const session = await getServerSession(req,res,authOptions);
-  if (!(await isAdminEmail(session?.user?.email))) {
+export async function isAdminRequest(req, res) {
+  const session = await getServerSession(req, res, authOptions);
+  if (!(session?.user?.isAdmin)) {
     res.status(401);
     res.end();
     throw 'not an admin';
