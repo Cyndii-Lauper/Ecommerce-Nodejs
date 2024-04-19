@@ -1,5 +1,4 @@
-## Getting Started
-Về phía folder client 
+## Về phía folder client 
 
 - Thứ nhất, cài đặt môi trường:
 ```bash
@@ -26,6 +25,8 @@ Cách tạo key API có thể xem video sau để tham khảo: https://www.youtu
 Cụ thể như trong hình dưới đây: 
 <img width="1800" alt="Screenshot 2024-04-19 at 13 11 09" src="https://github.com/Cyndii-Lauper/Ecommerce-Nodejs/assets/72398527/0a43153f-08d5-4264-b578-258ad08fc643">
 
+MongoDB có thể trực tiếp sử dụng đường dẫn cho trong code
+
 - Tiếp theo, Chạy server:
 ```bash
 npm run dev -p 4000
@@ -34,23 +35,47 @@ yarn dev -p 4000
 # or
 bun dev -p 4000
 ```
-First, run the development server:
 
+## Về phía folder admin
+
+- Thứ nhất, cài đặt môi trường:
+```bash
+npm install
+# or
+yarn install
+# or
+bun install
+```
+ 
+- Thứ hai, trong file .env ở folder client
+```bash
+// Tạo key API Google OAuth Credentials để chức năng đăng nhập google hoạt động
+GOOGLE_ID=""
+GOOGLE_SECRET=""
+
+MONGODB_URI="mongodb+srv://elevenine00:21112003@ecommerce.paklsaa.mongodb.net/?retryWrites=true&w=majority&appName=ecommerce"
+
+// Tạo key S3 bucket trong AWS để làm chức năng lưu ảnh sản phẩm
+S3_ACCESS_KEY="AKIA6NZQGTTTVFMU5GCL"
+S3_SECRET_ACCESS_KEY="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"
+```
+Cách tạo key API có thể xem video sau để tham khảo: https://www.youtube.com/watch?v=OKMgyF5ezFs
+
+Cụ thể như trong hình sau:
+<img width="1800" alt="Screenshot 2024-04-19 at 13 31 37" src="https://github.com/Cyndii-Lauper/Ecommerce-Nodejs/assets/72398527/d1a519a1-aba3-476f-9ee7-aab84631e5bd">
+
+Có thể sử dụng trực tiếp key S3 bucket đã cho sẵn trong code. 
+
+Hoặc là cách tạo key S3 bucket trong AWS để làm chức năng lưu ảnh sản phẩm: https://www.youtube.com/watch?v=9gtOkz4Ybdg
+
+MongoDB có thể trực tiếp sử dụng đường dẫn cho trong code
+
+- Tiếp theo, chạy chương trình
 ```bash
 npm run dev
 # or
 yarn dev
 # or
-pnpm dev
+bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
