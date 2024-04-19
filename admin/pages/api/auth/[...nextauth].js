@@ -5,6 +5,8 @@ import clientPromise from "@/lib/mongodb";
 import {Admin} from "@/models/Admin";
 import {mongooseConnect} from '@/lib/mongoose';
 
+// const isAdminEmail = ['mt130811@gmail.com'];
+
 async function isAdminEmail(email) {
   mongooseConnect();
   return !! (await Admin.findOne({email}));
