@@ -1,4 +1,4 @@
-<img width="1800" alt="Screenshot 2024-04-19 at 13 11 09" src="https://github.com/Cyndii-Lauper/Ecommerce-Nodejs/assets/72398527/0a43153f-08d5-4264-b578-258ad08fc643">## Getting Started
+## Getting Started
 Về phía folder client 
 
 - Thứ nhất, cài đặt môi trường:
@@ -23,7 +23,17 @@ NEXTAUTH_URL="http://localhost:4000"
 ```
 Cách tạo key API có thể xem video sau để tham khảo: https://www.youtube.com/watch?v=OKMgyF5ezFs
 
+Cụ thể như trong hình dưới đây: 
+<img width="1800" alt="Screenshot 2024-04-19 at 13 11 09" src="https://github.com/Cyndii-Lauper/Ecommerce-Nodejs/assets/72398527/0a43153f-08d5-4264-b578-258ad08fc643">
 
+- Tiếp theo, Chạy server:
+```bash
+npm run dev -p 4000
+# or
+yarn dev -p 4000
+# or
+bun dev -p 4000
+```
 First, run the development server:
 
 ```bash
